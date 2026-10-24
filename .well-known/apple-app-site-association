@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["APPLE_TEAM_ID.com.bassiuoo.mypetbook"],
+        "components": [
+          { "/": "/visit/*", "comment": "A vet visit code from the QR at the clinic" },
+          { "/": "/vet/*", "comment": "A vet's page in the app" }
+        ]
+      }
+    ]
+  }
+}

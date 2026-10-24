@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.bassiuoo.mypetbook",
+      "sha256_cert_fingerprints": ["F2:24:07:64:BC:9C:46:80:DB:13:69:B4:38:44:95:76:AD:F9:34:52:50:5A:DF:C5:29:F1:FB:69:79:32:1C:ED"]
+    }
+  }
+]

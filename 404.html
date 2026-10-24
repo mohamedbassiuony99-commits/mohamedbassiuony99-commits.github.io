@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Pet Book</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/img/favicon-48.png" sizes="48x48">
+<style>
+:root{--o:#E8692A;--cream:#FFF4E8;--ink:#1E2440;--sub:#5A5F73}
+@media (prefers-color-scheme:dark){:root{--cream:#14161F;--ink:#F4F1EC;--sub:#B3B6C4}}
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--cream);color:var(--ink);font:17px/1.6 system-ui,sans-serif;text-align:center;padding:24px;box-sizing:border-box}
+img{width:96px;height:96px;border-radius:22px}h1{font-size:26px;margin:14px 0 6px}p{color:var(--sub);margin:6px 0}
+a.btn{display:inline-block;margin:14px 6px 0;background:var(--o);color:#fff;text-decoration:none;font-weight:700;border-radius:14px;padding:12px 18px}
+a.alt{background:transparent;color:var(--ink);border:2px solid var(--o)}
+</style>
+</head>
+<body>
+<main>
+<img src="/img/apple-touch-icon.png" alt="My Pet Book">
+<h1 id="t">This page is not here</h1>
+<p id="s">It may have moved. The home page has everything about My Pet Book.</p>
+<p id="ar" dir="rtl" lang="ar">الصفحة دي مش موجودة. الصفحة الرئيسية فيها كل حاجة عن دفتر أليفي.</p>
+<p id="actions"><a class="btn alt" href="/">My Pet Book</a></p>
+</main>
+<script>
+// Links the app opens (a vet visit code, a vet's page): when the app is not installed, the phone
+// lands here instead. Offer to open the app, and explain what to do otherwise.
+(function () {
+  var m = location.pathname.match(/^\/(visit|vet)\/([A-Za-z0-9-]{4,64})\/?$/);
+  if (!m) return;
+  var kind = m[1], id = m[2].replace(/[^A-Za-z0-9-]/g, '');
+  document.getElementById('t').textContent = kind === 'visit' ? 'Open this visit in My Pet Book' : 'Open this vet in My Pet Book';
+  document.getElementById('s').textContent = kind === 'visit'
+    ? 'Vets: open My Pet Book, Vet mode, and scan the code or type it. ' + (id.length === 8 ? 'Code: ' + id.slice(0, 4) + ' ' + id.slice(4) : '')
+    : 'This vet is listed in the My Pet Book app.';
+  document.getElementById('ar').textContent = kind === 'visit'
+    ? 'للدكاترة: افتح دفتر أليفي، وضع الدكتور، واقرا الكود أو اكتبه.'
+    : 'الدكتور ده موجود في أبلكيشن دفتر أليفي.';
+  var a = document.createElement('a');
+  a.className = 'btn';
+  a.href = 'petbook://' + kind + '/' + id;
+  a.textContent = 'Open in the app · افتح في الأبلكيشن';
+  document.getElementById('actions').prepend(a);
+})();
+</script>
+</body>
+</html>
