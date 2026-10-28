@@ -1,0 +1,6 @@
+# My Pet Book: everything here may be indexed (Google, Apple and other search engines).
+User-agent: *
+Allow: /
+Disallow: /admin/
+
+Sitemap: https://mohamedbassiuony99-commits.github.io/sitemap.xml
