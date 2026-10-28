@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Site dashboard · My Pet Book</title>
+<link rel="icon" href="/img/favicon-48.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&family=Baloo+Bhaijaan+2:wght@500;700&display=swap">
+<style>
+/* The website's own words, editable by Mohamed (28 Oct 2026). A working screen: quiet surfaces,
+   one accent on the action, real fields. Changes go live at once through Supabase (0030). */
+:root { --bg: #F3F4F7; --panel: #FFFFFF; --ink: #1F2A44; --muted: #4A5468; --line: #DCE0E8; --accent: #E8692A; --ok: #2FA585; --bad: #C8463D; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 Nunito, system-ui, sans-serif; }
+header { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 16px; padding: 14px 24px; background: var(--panel); border-bottom: 1px solid var(--line); }
+header h1 { margin: 0; font-size: 20px; font-weight: 800; flex: 1; }
+header a { color: var(--ink); font-weight: 700; }
+main { max-width: 1100px; margin: 0 auto; padding: 24px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+label { display: block; font-weight: 700; font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+input, textarea { width: 100%; font: inherit; color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+textarea { resize: vertical; min-height: 44px; }
+textarea[dir="rtl"] { font-family: 'Baloo Bhaijaan 2', Nunito, sans-serif; }
+input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+button { font: inherit; font-weight: 800; border: 0; border-radius: 999px; padding: 10px 20px; cursor: pointer; background: var(--ink); color: #fff; }
+button.primary { background: var(--accent); }
+button.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+button:disabled { opacity: 0.5; cursor: default; }
+.row { display: grid; grid-template-columns: 200px 1fr 1fr auto; gap: 12px; align-items: start; padding: 14px 0; border-top: 1px solid var(--line); }
+.row:first-of-type { border-top: 0; }
+.key { font-weight: 800; font-size: 14px; word-break: break-all; }
+.key small { display: block; color: var(--muted); font-weight: 500; }
+.changed .key::after { content: ' · edited'; color: var(--accent); font-weight: 800; }
+.live .key small::after { content: ' · live override'; color: var(--ok); font-weight: 800; }
+.tools { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+.tools input { max-width: 320px; }
+.group h2 { font-size: 18px; margin: 0 0 6px; }
+.msg { min-height: 24px; font-weight: 700; }
+.msg.ok { color: var(--ok); } .msg.bad { color: var(--bad); }
+.signin { max-width: 420px; margin: 60px auto; }
+.signin p { color: var(--muted); }
+.hidden { display: none !important; }
+@media (max-width: 760px) { .row { grid-template-columns: 1fr; } header { padding: 12px 16px; } main { padding: 16px; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Site dashboard</h1>
+  <a href="/" target="_blank" rel="noopener">Open the site</a>
+  <button class="ghost hidden" id="out">Sign out</button>
+</header>
+<main>
+  <section class="panel signin" id="signin">
+    <h2>Sign in</h2>
+    <p>Use your admin account (the same email as in the app). We email you a 6-digit code.</p>
+    <label for="email">Email</label>
+    <input id="email" type="email" autocomplete="email" placeholder="you@example.com">
+    <div style="height:12px"></div>
+    <div id="codeBox" class="hidden">
+      <label for="code">Code from the email</label>
+      <input id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="8">
+      <div style="height:12px"></div>
+    </div>
+    <button class="primary" id="go">Send the code</button>
+    <p class="msg" id="smsg" role="status"></p>
+  </section>
+
+  <section id="editor" class="hidden">
+    <div class="tools">
+      <input id="find" type="search" placeholder="Find a word or a key" aria-label="Find">
+      <button class="primary" id="save" disabled>Save changes</button>
+      <span class="msg" id="msg" role="status"></span>
+    </div>
+    <div id="groups"></div>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.min.js"></script>
+<script>
+(function () {
+  var URL_ = 'https://mudcarezixoaadjsszou.supabase.co';
+  var KEY = 'sb_publishable__1JKEnDHduYvZQr9gSznwg_VXNd_Ee-';
+  var sb = window.supabase.createClient(URL_, KEY, { auth: { persistSession: true, storageKey: 'pb-site-admin' } });
+  var $ = function (id) { return document.getElementById(id); };
+  var defaults = null, live = {}, edits = {};
+  var NAMES = { meta: 'Search and sharing', nav: 'Top bar', hero: 'First screen', show: 'Screens', feat: 'What’s inside', how: 'At the vet', plus: 'Plus', faq: 'Questions', cta: 'Start their book', foot: 'Footer', alt: 'Picture descriptions', link: 'Links (store, WhatsApp, policy)' };
+
+  function say(el, text, ok) { el.textContent = text; el.className = 'msg ' + (ok ? 'ok' : 'bad'); }
+
+  async function start() {
+    var s = (await sb.auth.getSession()).data.session;
+    if (!s) return;
+    $('signin').classList.add('hidden');
+    $('out').classList.remove('hidden');
+    $('editor').classList.remove('hidden');
+    var res = await Promise.all([fetch('/content.json').then(function (r) { return r.json(); }), sb.rpc('site_content_admin')]);
+    defaults = res[0];
+    if (res[1].error) { say($('msg'), res[1].error.message.indexOf('not_admin') >= 0 ? 'This account is not an admin.' : 'Could not load: ' + res[1].error.message, false); return; }
+    (res[1].data || []).forEach(function (r) { live[r.key] = r; });
+    draw();
+  }
+
+  function draw() {
+    var keys = Object.keys(defaults.en).concat(Object.keys(defaults.links).map(function (k) { return 'link.' + k; }));
+    var byGroup = {};
+    keys.forEach(function (k) { var g = k.split('.')[0]; (byGroup[g] = byGroup[g] || []).push(k); });
+    var q = $('find').value.trim().toLowerCase();
+    var html = '';
+    Object.keys(byGroup).forEach(function (g) {
+      var rows = byGroup[g].filter(function (k) {
+        if (!q) return true;
+        var d = valueOf(k);
+        return (k + ' ' + d.en + ' ' + d.ar).toLowerCase().indexOf(q) >= 0;
+      });
+      if (!rows.length) return;
+      html += '<div class="panel group"><h2>' + (NAMES[g] || g) + '</h2>';
+      rows.forEach(function (k) {
+        var d = valueOf(k), link = k.indexOf('link.') === 0;
+        var cls = 'row' + (edits[k] ? ' changed' : '') + (live[k] ? ' live' : '');
+        html += '<div class="' + cls + '" data-key="' + k + '"><div class="key">' + k + '<small>' + (link ? 'one link for both pages' : 'English · Arabic') + '</small></div>' +
+          '<div><label>English' + (link ? ' / link' : '') + '</label><textarea rows="' + rowsFor(d.en) + '" data-l="en">' + esc(d.en) + '</textarea></div>' +
+          (link ? '<div></div>' : '<div><label>العربي</label><textarea dir="rtl" rows="' + rowsFor(d.ar) + '" data-l="ar">' + esc(d.ar) + '</textarea></div>') +
+          '<div>' + (live[k] ? '<button class="ghost" data-reset>Back to built-in</button>' : '') + '</div></div>';
+      });
+      html += '</div>';
+    });
+    $('groups').innerHTML = html;
+  }
+  function valueOf(k) {
+    if (edits[k]) return edits[k];
+    var link = k.indexOf('link.') === 0, name = k.slice(5);
+    var base = link ? { en: defaults.links[name] || '', ar: '' } : { en: defaults.en[k] || '', ar: defaults.ar[k] || '' };
+    if (live[k]) return { en: live[k].en || base.en, ar: live[k].ar || base.ar };
+    return base;
+  }
+  function rowsFor(s) { return Math.min(6, Math.max(1, Math.ceil((s || '').length / 48))); }
+  function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+
+  $('groups').addEventListener('input', function (e) {
+    var row = e.target.closest('[data-key]'); if (!row) return;
+    var k = row.getAttribute('data-key');
+    var en = row.querySelector('[data-l="en"]').value, arEl = row.querySelector('[data-l="ar"]');
+    edits[k] = { en: en, ar: arEl ? arEl.value : '' };
+    row.classList.add('changed');
+    $('save').disabled = false;
+  });
+  $('groups').addEventListener('click', async function (e) {
+    if (!e.target.hasAttribute('data-reset')) return;
+    var k = e.target.closest('[data-key]').getAttribute('data-key');
+    var r = await sb.rpc('site_content_set', { p_key: k, p_en: '', p_ar: '' });
+    if (r.error || r.data !== true) return say($('msg'), 'Could not reset ' + k, false);
+    delete live[k]; delete edits[k]; draw(); say($('msg'), k + ' is back to the built-in text.', true);
+  });
+  $('find').addEventListener('input', draw);
+  $('save').addEventListener('click', async function () {
+    var keys = Object.keys(edits); if (!keys.length) return;
+    $('save').disabled = true; say($('msg'), 'Saving ' + keys.length + '…', true);
+    var bad = [];
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i], v = edits[k];
+      var r = await sb.rpc('site_content_set', { p_key: k, p_en: v.en, p_ar: v.ar });
+      if (r.error || r.data !== true) bad.push(k); else { live[k] = { key: k, en: v.en, ar: v.ar }; delete edits[k]; }
+    }
+    draw();
+    if (bad.length) say($('msg'), 'Not saved: ' + bad.join(', ') + ' (links must start with https://, mailto: or /).', false);
+    else say($('msg'), 'Saved. The site shows it now (refresh the page).', true);
+    $('save').disabled = Object.keys(edits).length === 0;
+  });
+
+  var asked = false;
+  $('go').addEventListener('click', async function () {
+    var email = $('email').value.trim().toLowerCase();
+    if (!asked) {
+      var r = await sb.auth.signInWithOtp({ email: email, options: { shouldCreateUser: false } });
+      if (r.error) return say($('smsg'), r.error.message, false);
+      asked = true; $('codeBox').classList.remove('hidden'); $('go').textContent = 'Sign in'; say($('smsg'), 'Code sent. Check your email.', true); $('code').focus();
+      return;
+    }
+    var v = await sb.auth.verifyOtp({ email: email, token: $('code').value.replace(/\D/g, ''), type: 'email' });
+    if (v.error) return say($('smsg'), v.error.message, false);
+    start();
+  });
+  $('out').addEventListener('click', async function () { await sb.auth.signOut(); location.reload(); });
+  window.addEventListener('beforeunload', function (e) { if (Object.keys(edits).length) { e.preventDefault(); e.returnValue = ''; } });
+  start();
+})();
+</script>
+</body>
+</html>

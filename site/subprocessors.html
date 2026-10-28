@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Pet Book – Sub-processors</title>
+<meta name="description" content="The companies that process data for My Pet Book, what for, and where.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Baloo+Bhaijaan+2:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFF8EE;--card:#ffffff;--ink:#1F2A44;--muted:#5b6478;--orange:#E8692A;--yellow:#FFD23F;--line:#f0e2cf}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#141a2b;--card:#1d2540;--ink:#f3eee6;--muted:#aab1c4;--line:#2c3557}}
+:root[data-theme="dark"]{--bg:#141a2b;--card:#1d2540;--ink:#f3eee6;--muted:#aab1c4;--line:#2c3557}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Nunito,system-ui,sans-serif}
+header{background:var(--orange);color:#FFF8EE;padding:40px 16px 34px;text-align:center}
+header h1{font:800 clamp(30px,6vw,46px)/1.1 "Baloo 2",sans-serif;margin:0}
+header h1 a{color:inherit;text-decoration:none}
+header p{margin:8px 0 0;font-weight:600;opacity:.95}
+.mk{background:var(--yellow);color:#1F2A44;border-radius:8px;padding:0 .2em}
+nav{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+nav a{color:#1F2A44;background:#FFF8EE;text-decoration:none;font-weight:800;padding:8px 18px;border-radius:999px}
+nav a[aria-current]{background:#1F2A44;color:#FFF8EE}
+main{max-width:860px;margin:0 auto;padding:24px 16px 60px}
+section.lang{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px clamp(16px,4vw,36px);margin-top:24px}
+h2{font:800 26px/1.2 "Baloo 2",sans-serif;margin:8px 0 4px}
+h3{font:800 19px/1.3 "Baloo 2",sans-serif;margin:26px 0 6px;color:var(--orange)}
+.updated{color:var(--muted);font-size:14px;margin:12px 0}
+.note{background:rgba(255,210,63,.18);border-left:5px solid var(--yellow);border-radius:10px;padding:12px 16px;margin:16px 0}
+[dir=rtl] .note{border-left:0;border-right:5px solid var(--yellow)}
+.table{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:600px}
+th,td{border-bottom:1px solid var(--line);padding:10px 8px;text-align:start;vertical-align:top}
+th{font-weight:800}
+ul{padding-inline-start:20px}
+li{margin:4px 0}
+[dir=rtl]{font-family:"Baloo Bhaijaan 2",Nunito,sans-serif;line-height:1.8}
+[dir=rtl] h2,[dir=rtl] h3{font-family:"Baloo Bhaijaan 2",sans-serif}
+footer{text-align:center;color:var(--muted);font-size:14px;padding:0 16px 40px}
+a{color:var(--orange)}
+</style>
+</head>
+<body>
+<header>
+<h1><a href="./">my pet <span class="mk">book</span></a></h1>
+<p>Sub-processors · المعالجون الفرعيون</p>
+<nav><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a><a href="dpa.html">Data Processing Agreement for clinics</a><a href="subprocessors.html" aria-current="page">Sub-processors</a></nav>
+<nav><a href="#en">English</a><a href="#ar">العربية</a></nav>
+</header>
+<main>
+<section class="lang" id="en" dir="ltr" lang="en">
+<h2>Sub-processors</h2>
+<p class="updated">Last updated: 28 October 2026</p>
+<p>These are the companies that process personal data for My Pet Book, what each does and where. We use them only for the features described in the <a href="privacy.html">Privacy Policy</a>. Clinics in Vet mode are told at least 14 days before we add one (<a href="dpa.html">DPA</a>, section 3).</p>
+<div class="table"><table><tr><th>Company</th><th>What for</th><th>Where the data is processed</th><th>When</th></tr><tr><td>Supabase, Inc.</td><td>Database, sign-in and server functions for the app and the website</td><td>Frankfurt, Germany (EU), on Amazon Web Services</td><td>Always, when you use an online feature</td></tr><tr><td>Anthropic, PBC</td><td>Reads scanned photos (Claude), checks review text, helps find the cause of crashes</td><td>United States</td><td>When you scan, write a review, or the app crashes</td></tr><tr><td>Google LLC</td><td>Reads scanned photos (Gemini) when Claude is busy; Sign in with Google; Google Play billing; Play Integrity device check; sign-in code emails (Google Workspace)</td><td>United States and other countries</td><td>When you use one of these features</td></tr><tr><td>Apple Inc.</td><td>Sign in with Apple; App Store billing; App Attest device check</td><td>United States and other countries</td><td>On iPhone, when you use one of these features</td></tr><tr><td>RevenueCat, Inc.</td><td>Tells our server whether Plus is active</td><td>United States</td><td>When you buy or restore Plus</td></tr><tr><td>PostHog, Inc.</td><td>Phone crash details (no screens, no usage counts)</td><td>Frankfurt, Germany (EU cloud)</td><td>Only after you say yes to "Detailed crash reports"</td></tr><tr><td>650 Industries, Inc. (Expo)</td><td>Delivers app updates; push notices to the admin’s own phone</td><td>United States</td><td>When the app checks for an update</td></tr><tr><td>GitHub, Inc.</td><td>Hosts this website (no app data)</td><td>United States</td><td>When you visit the website</td></tr></table></div>
+<p>Apps you open from My Pet Book yourself (WhatsApp, the phone dialer, Google Maps) are not our sub-processors: what you share there is between you and them.</p>
+<p class="updated">Last change: 28 October 2026 (anonymous usage counts on by default with a switch to turn them off; PostHog only for detailed crash reports, with consent; added Apple App Attest and Google Play Integrity for the device check; dogs and cats only).</p>
+</section>
+<section class="lang" id="ar" dir="rtl" lang="ar">
+<h2>المعالجون الفرعيون</h2>
+<p class="updated">آخر تحديث: ٢٨ أكتوبر ٢٠٢٦</p>
+<p>هذه هي الشركات التي تعالج بيانات شخصية لصالح دفتر أليفي، وما تفعله كل منها ومكانه. ونستعين بها فقط للميزات الموصوفة في <a href="privacy.html">سياسة الخصوصية</a>. ونُخطر العيادات في وضع الطبيب قبل إضافة أي شركة بـ 14 يومًا على الأقل (<a href="dpa.html">الاتفاقية</a>، البند ٣).</p>
+<div class="table"><table><tr><th>الشركة</th><th>لأي غرض</th><th>مكان معالجة البيانات</th><th>متى</th></tr><tr><td>Supabase, Inc.</td><td>قاعدة البيانات وتسجيل الدخول ووظائف الخادم للتطبيق والموقع</td><td>فرانكفورت، ألمانيا (الاتحاد الأوروبي)، على خوادم Amazon Web Services</td><td>دائمًا، عند استخدام أي ميزة تعمل عبر الإنترنت</td></tr><tr><td>Anthropic, PBC</td><td>قراءة الصور الممسوحة (Claude)، ومراجعة نص التقييمات، والمساعدة في معرفة سبب الأعطال</td><td>الولايات المتحدة</td><td>عند المسح أو كتابة تقييم أو حدوث عطل</td></tr><tr><td>Google LLC</td><td>قراءة الصور الممسوحة (Gemini) عند انشغال Claude؛ تسجيل الدخول بحساب Google؛ الدفع عبر Google Play؛ فحص الجهاز Play Integrity؛ رسائل أكواد الدخول (Google Workspace)</td><td>الولايات المتحدة ودول أخرى</td><td>عند استخدام إحدى هذه الميزات</td></tr><tr><td>Apple Inc.</td><td>تسجيل الدخول بحساب Apple؛ الدفع عبر App Store؛ فحص الجهاز App Attest</td><td>الولايات المتحدة ودول أخرى</td><td>على الآيفون، عند استخدام إحدى هذه الميزات</td></tr><tr><td>RevenueCat, Inc.</td><td>إبلاغ خادمنا بحالة اشتراك Plus</td><td>الولايات المتحدة</td><td>عند شراء Plus أو استعادته</td></tr><tr><td>PostHog, Inc.</td><td>تفاصيل أعطال الهاتف (بدون شاشات ولا عدّ استخدام)</td><td>فرانكفورت، ألمانيا (السحابة الأوروبية)</td><td>فقط بعد موافقتك على «تقارير أعطال مفصّلة»</td></tr><tr><td>650 Industries, Inc. (Expo)</td><td>توصيل تحديثات التطبيق؛ وإشعارات لهاتف المدير فقط</td><td>الولايات المتحدة</td><td>عندما يبحث التطبيق عن تحديث</td></tr><tr><td>GitHub, Inc.</td><td>استضافة هذا الموقع (بدون بيانات التطبيق)</td><td>الولايات المتحدة</td><td>عند زيارة الموقع</td></tr></table></div>
+<p>التطبيقات التي تفتحها بنفسك من دفتر أليفي (واتساب، والاتصال، وخرائط Google) ليست معالجين فرعيين لنا: ما تشاركه فيها بينك وبينها.</p>
+<p class="updated">آخر تغيير: ٢٨ أكتوبر ٢٠٢٦ (عدّ الاستخدام المجهول مفعّل تلقائيًا مع زر لإيقافه؛ وPostHog لتقارير الأعطال المفصّلة فقط وبالموافقة؛ وأضفنا Apple App Attest وGoogle Play Integrity لفحص الجهاز؛ كلاب وقطط فقط).</p>
+</section>
+</main>
+<footer>© 2026 My Pet Book · دفتر أليفي · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></footer>
+</body>
+</html>
