@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<!-- CSP: the inline script's hash is below; change it with the script (ask Claude). -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-0Y4Eez469Yh9vm2OZKG9KOFF9pecsvUmauSD/d92oHI='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://mudcarezixoaadjsszou.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Site dashboard · My Pet Book</title>
@@ -77,7 +80,8 @@ button:disabled { opacity: 0.5; cursor: default; }
     <div id="groups"></div>
   </section>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.min.js"></script>
+<!-- supabase-js 2.117.2, served from this site (no third-party script on the page that holds an admin session). -->
+<script src="/admin/supabase.js"></script>
 <script>
 (function () {
   var URL_ = 'https://mudcarezixoaadjsszou.supabase.co';

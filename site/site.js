@@ -28,7 +28,8 @@
     });
     document.querySelectorAll('[data-link]').forEach(function (el) {
       var v = live['link.' + el.getAttribute('data-link')];
-      if (v && /^(https:|mailto:|\/)/.test(v)) el.setAttribute('href', v);
+      // https, mail, or a path on this site; never "//other.site" or javascript:.
+      if (v && /^(https:\/\/|mailto:|\/(?!\/))/.test(v)) el.setAttribute('href', v);
     });
     if (live['meta.title']) document.title = live['meta.title'];
     nameBook();
@@ -47,6 +48,8 @@
   } catch (e) {}
 
   // ---- the name line on the cover ----
+  // Enter in the name field must not reload the page (no inline handler: the CSP allows none).
+  document.querySelectorAll('form.belongs').forEach(function (f) { f.addEventListener('submit', function (e) { e.preventDefault(); }); });
   var input = document.getElementById('petname');
   var dlgName = document.getElementById('dlg-name');
   var go = document.getElementById('dlg-go');
@@ -82,6 +85,22 @@
   if (input) input.addEventListener('change', function () { try { localStorage.setItem('pb-pet', input.value.trim()); } catch (e) {} });
   nameBook();
 
+  // ---- one fade-out, swap, fade-in for the screen pictures. The same picture again, a cached one
+  // or one that fails to load never leaves the frame empty. ----
+  function swap(img, src, ms) {
+    if (!src || img.getAttribute('src') === src) return;
+    if (reduced) { img.src = src; return; }
+    img.style.opacity = '0';
+    setTimeout(function () {
+      var shown = false;
+      var show = function () { if (!shown) { shown = true; img.style.opacity = '1'; } };
+      img.onload = show; img.onerror = show;
+      img.src = src;
+      if (img.complete) show();
+      setTimeout(show, 1500);
+    }, ms);
+  }
+
   // ---- screen tabs ----
   var plate = document.querySelector('[data-plate]');
   document.querySelectorAll('[data-tab]').forEach(function (b) {
@@ -89,12 +108,7 @@
       var n = b.getAttribute('data-tab');
       document.querySelectorAll('[data-tab]').forEach(function (x) { x.setAttribute('aria-selected', String(x === b)); });
       document.querySelectorAll('[data-pane]').forEach(function (p) { p.hidden = p.getAttribute('data-pane') !== n; });
-      if (plate) {
-        var src = b.getAttribute('data-src');
-        if (reduced) { plate.src = src; return; }
-        plate.style.opacity = '0';
-        setTimeout(function () { plate.src = src; plate.onload = function () { plate.style.opacity = '1'; }; }, 260);
-      }
+      if (plate) swap(plate, b.getAttribute('data-src'), 260);
     });
   });
 
@@ -123,6 +137,20 @@
     setTimeout(function () { targets.forEach(function (el) { el.classList.add('in'); }); }, 2500);
   }
 
+  // ---- load out: where cross-page view transitions are missing, the page lifts away before leaving ----
+  if (!reduced && !('CSSViewTransitionRule' in window)) {
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target === '_blank' || a.hasAttribute('download')) return;
+      var url = new URL(a.href, location.href);
+      if (url.origin !== location.origin || (url.pathname === location.pathname && url.hash)) return;
+      e.preventDefault();
+      doc.classList.add('leaving');
+      setTimeout(function () { location.href = url.href; }, 200);
+    });
+    window.addEventListener('pageshow', function () { doc.classList.remove('leaving'); });
+  }
+
   // ---- the signature move: the app screen in the hero changes with the time of day of the pet ----
   var shot = document.querySelector('.room-shot img');
   if (shot && !reduced) {
@@ -132,8 +160,7 @@
       if (document.hidden) return;
       at = (at + 1) % srcs.length;
       shot.style.transition = 'opacity 800ms ease';
-      shot.style.opacity = '0';
-      setTimeout(function () { shot.src = srcs[at]; shot.onload = function () { shot.style.opacity = '1'; }; }, 800);
+      swap(shot, srcs[at], 800);
     }, 6000);
     window.addEventListener('pagehide', function () { clearInterval(timer); });
   }

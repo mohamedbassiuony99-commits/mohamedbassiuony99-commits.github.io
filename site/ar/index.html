@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-XzlI6kA2T2DurE3slSggO2HEWiHYaf3czVnQuZsw7fc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://mudcarezixoaadjsszou.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>دفتر أليفي: دفتر صحة قطتك أو كلبك على موبايلك</title>
 <meta name="description" content="تطعيمات وأدوية وزيارات قطتك أو كلبك في دفتر واحد على موبايلك، مع تذكير قبل كل جرعة ودكاترة في مصر بيمضوا على زيارتك. مجاني، من غير إعلانات، بالعربي المصري والإنجليزي.">
@@ -43,12 +44,12 @@
 <main id="main">
 <section class="hero wrap" aria-labelledby="h1">
   <div class="cover reveal">
-    <div class="stripe" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="stripe" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
     <div class="cover-body">
       <img class="cover-icon" src="/img/icon-512.png" alt="" width="96" height="96">
       <h1 id="h1" data-k="hero.title">دفتر صحة أليفك، على موبايلك</h1>
       <p class="sub" data-k="hero.sub">تطعيمات وأدوية وزيارات قطتك أو كلبك في مكان واحد، مع تذكير قبل كل جرعة. مجاني، ومن غير إعلانات.</p>
-      <form class="belongs" onsubmit="return false" aria-label="الدفتر ده بتاع">
+      <form class="belongs" aria-label="الدفتر ده بتاع">
         <label for="petname" data-k="hero.belongs">الدفتر ده بتاع</label>
         <input id="petname" name="petname" maxlength="24" autocomplete="off" placeholder="اسم أليفك" data-kp="hero.namePlaceholder">
         <div class="kind" role="radiogroup" aria-label="النوع">
@@ -110,7 +111,7 @@
     <h3 data-k="feat.g3">حواليك</h3>
     <ul class="items">
           <li class="item"><span class="iname" data-k="feat.i8">دكاترة تقدر تتأكد منهم</span><span class="leader" aria-hidden="true"></span><span class="ival" data-k="feat.free">مجاني</span>
-            <span class="idesc" data-k="feat.d8">التقييم بس من الناس اللي كلّمت الدكتور من الأبلكيشن.</span></li>
+            <span class="idesc" data-k="feat.d8">التقييم بس من اللي كلّم أو راسل الدكتور من الأبلكيشن، والعيادة تقدر ترد.</span></li>
           <li class="item"><span class="iname" data-k="feat.i9">أصحاب الشارع</span><span class="leader" aria-hidden="true"></span><span class="ival" data-k="feat.free">مجاني</span>
             <span class="idesc" data-k="feat.d9">تابع قطط وكلاب الشارع اللي بتأكّلها، مع نصايح أمان.</span></li>
     </ul>
@@ -130,7 +131,7 @@
     <h3 data-k="how.h1">قبل ما تروح</h3>
     <ol class="rows">
           <li><span data-k="how.r1">افتح «عند الدكتور» على أليفك</span><span class="leader" aria-hidden="true"></span><span class="nums" data-k="how.t1">١٠ ث</span></li>
-          <li><span data-k="how.r2">وريه الكود الـ ٦ أرقام</span><span class="leader" aria-hidden="true"></span><span class="nums" data-k="how.t2">٥ ث</span></li></ol>
+          <li><span data-k="how.r2">وريه الـ QR كود، أو اقرأ حروفه الـ ٨</span><span class="leader" aria-hidden="true"></span><span class="nums" data-k="how.t2">٥ ث</span></li></ol>
     <h3 data-k="how.h2">في العيادة</h3>
     <ol class="rows">
           <li><span data-k="how.r3">الدكتور يكتب الكود</span><span class="leader" aria-hidden="true"></span><span class="nums" data-k="how.t3">١٠ ث</span></li>
@@ -176,7 +177,7 @@
         </details>
         <details class="card c1"  style="--i:3">
           <summary><span class="tab" data-k="faq.t4">الخصوصية</span><span class="q" data-k="faq.q4">بياناتي فين؟</span></summary>
-          <p data-k="faq.a4">على موبايلك. اللي بيطلع بس اللي الميزة محتاجاه، زي صورة الصفحة اللي بتصوّرها أو الحيوانات اللي بتشاركها مع العيلة. تقدر تصدّر كل حاجة أو تمسح حسابك من الإعدادات.</p>
+          <p data-k="faq.a4">على موبايلك. اللي بيطلع بس اللي الميزة محتاجاه، زي صورة الصفحة اللي بتصوّرها أو الحيوانات اللي بتشاركها مع العيلة. والأبلكيشن بيعدّ الشاشات اللي بتتفتح من غير ما يعرف انت مين، عشان نلاقي المشاكل، وتقدر تقفل ده من الإعدادات. وتقدر تصدّر كل حاجة أو تمسح حسابك من الإعدادات.</p>
         </details>
         <details class="card c2"  style="--i:4">
           <summary><span class="tab" data-k="faq.t5">اللغة</span><span class="q" data-k="faq.q5">فيه عربي؟</span></summary>
@@ -209,7 +210,7 @@
 </main>
 
 <footer class="foot">
-  <div class="stripe" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="stripe" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
   <div class="foot-top wrap">
     <div>
       <p class="invite" data-k="foot.invite">تعالى سلّم علينا</p>

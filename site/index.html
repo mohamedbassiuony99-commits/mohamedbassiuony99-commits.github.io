@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Lp6S4hnjw5XPfz5Cs/bvSH2dq0mU7jqMZA+Nx2ysiMY='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://mudcarezixoaadjsszou.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My Pet Book: Vet &amp; Vaccines, the health book for your cat or dog</title>
 <meta name="description" content="Your cat or dog’s vaccines, medicines and vet visits in one book on your phone, with gentle reminders and vets in Egypt who sign your visits. Free, no ads, English and Egyptian Arabic.">
@@ -43,12 +44,12 @@
 <main id="main">
 <section class="hero wrap" aria-labelledby="h1">
   <div class="cover reveal">
-    <div class="stripe" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="stripe" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
     <div class="cover-body">
       <img class="cover-icon" src="/img/icon-512.png" alt="" width="96" height="96">
       <h1 id="h1" data-k="hero.title">Your pet’s health book, on your phone</h1>
       <p class="sub" data-k="hero.sub">Vaccines, medicines and vet visits for your cat or dog in one place, with a reminder before every dose. Free, with no ads.</p>
-      <form class="belongs" onsubmit="return false" aria-label="This book belongs to">
+      <form class="belongs" aria-label="This book belongs to">
         <label for="petname" data-k="hero.belongs">This book belongs to</label>
         <input id="petname" name="petname" maxlength="24" autocomplete="off" placeholder="your pet’s name" data-kp="hero.namePlaceholder">
         <div class="kind" role="radiogroup" aria-label="Kind">
@@ -110,7 +111,7 @@
     <h3 data-k="feat.g3">Around you</h3>
     <ul class="items">
           <li class="item"><span class="iname" data-k="feat.i8">Vets you can check</span><span class="leader" aria-hidden="true"></span><span class="ival" data-k="feat.free">free</span>
-            <span class="idesc" data-k="feat.d8">Ratings only from people who contacted the vet through the app.</span></li>
+            <span class="idesc" data-k="feat.d8">Only people who called or messaged the vet from the app can rate them, and the clinic can reply.</span></li>
           <li class="item"><span class="iname" data-k="feat.i9">Street friends</span><span class="leader" aria-hidden="true"></span><span class="ival" data-k="feat.free">free</span>
             <span class="idesc" data-k="feat.d9">Keep track of the street cats and dogs you feed, with safety tips.</span></li>
     </ul>
@@ -130,7 +131,7 @@
     <h3 data-k="how.h1">Before you go</h3>
     <ol class="rows">
           <li><span data-k="how.r1">Open “At the vet” on your pet</span><span class="leader" aria-hidden="true"></span><span class="nums" data-k="how.t1">10 s</span></li>
-          <li><span data-k="how.r2">Show the six-digit code</span><span class="leader" aria-hidden="true"></span><span class="nums" data-k="how.t2">5 s</span></li></ol>
+          <li><span data-k="how.r2">Show the QR code, or read out its 8 letters</span><span class="leader" aria-hidden="true"></span><span class="nums" data-k="how.t2">5 s</span></li></ol>
     <h3 data-k="how.h2">In the clinic</h3>
     <ol class="rows">
           <li><span data-k="how.r3">The vet types the code</span><span class="leader" aria-hidden="true"></span><span class="nums" data-k="how.t3">10 s</span></li>
@@ -176,7 +177,7 @@
         </details>
         <details class="card c1"  style="--i:3">
           <summary><span class="tab" data-k="faq.t4">Privacy</span><span class="q" data-k="faq.q4">Where is my data?</span></summary>
-          <p data-k="faq.a4">On your phone. Only what a feature needs leaves it, like the photo of a page you scan or the pets you share with family. You can export everything or delete your account in Settings.</p>
+          <p data-k="faq.a4">On your phone. Only what a feature needs leaves it, like the photo of a page you scan or the pets you share with family. The app also counts which screens are used, anonymously, to find bugs; you can turn that off in Settings. You can export everything or delete your account in Settings.</p>
         </details>
         <details class="card c2"  style="--i:4">
           <summary><span class="tab" data-k="faq.t5">Language</span><span class="q" data-k="faq.q5">Is it in Arabic?</span></summary>
@@ -209,7 +210,7 @@
 </main>
 
 <footer class="foot">
-  <div class="stripe" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="stripe" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
   <div class="foot-top wrap">
     <div>
       <p class="invite" data-k="foot.invite">Come say hi</p>
