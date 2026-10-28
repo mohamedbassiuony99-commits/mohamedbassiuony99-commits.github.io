@@ -2,11 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<!-- CSP: if you edit the inline script below, its hash here must change too (ask Claude). -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-BboiFQIQHGZ8bZjbWBL9I4WZelfZwVC8C/+1cz51KRQ='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My Pet Book</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="/img/favicon-48.png" sizes="48x48">
 <style>
+@view-transition{navigation:auto}::view-transition-old(root){animation:pb-out .2s cubic-bezier(.22,1,.36,1) both}::view-transition-new(root){animation:pb-in .46s cubic-bezier(.16,1,.3,1) both}@keyframes pb-out{to{opacity:0;transform:translateY(-12px)}}@keyframes pb-in{from{opacity:0;transform:translateY(16px)}}@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
 :root{--o:#E8692A;--cream:#FFF4E8;--ink:#1E2440;--sub:#5A5F73}
 @media (prefers-color-scheme:dark){:root{--cream:#14161F;--ink:#F4F1EC;--sub:#B3B6C4}}
 body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--cream);color:var(--ink);font:17px/1.6 system-ui,sans-serif;text-align:center;padding:24px;box-sizing:border-box}
