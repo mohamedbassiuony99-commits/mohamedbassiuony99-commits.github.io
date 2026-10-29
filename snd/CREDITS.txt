@@ -1,0 +1,3 @@
+Sounds: "Interface Sounds" by Kenney (www.kenney.nl), CC0 1.0 (public domain).
+https://creativecommons.org/publicdomain/zero/1.0/
+Used: select_002 (tap), toggle_001, drop_002 (pat), confirmation_001 (success), maximize_009 (open), minimize_009 (close), tick_004 (tick).
