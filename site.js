@@ -1,6 +1,7 @@
-/* My Pet Book website behaviour (27 Oct 2026, hero, sprites, sound and touch 29 Oct). Everything works without it; it adds:
-   - feel: soft clicks from Kenney's CC0 interface sounds (snd/), a vibration where the phone allows
-     it (Android; iPhone with iOS 18 through the switch control), a ripple and a paw on buttons;
+/* My Pet Book website behaviour (27 Oct 2026, hero, sprites and touch 29 Oct). Everything works without it; it adds:
+   - feel: a vibration where the phone allows it (Android; iPhone with iOS 18 through the switch
+     control), a ripple and a paw on buttons. No sounds: a website stays quiet (Mohamed, 29 Oct);
+   - the story: the phone turns around at each step and plays that part of the app;
    - the pixel pets: tap one to pat it (it hops, a heart floats up; every fifth pat is a cheer);
    - the hero: the pet's name typed in the form becomes the giant word and the name on the phone;
    - the live thing: the pet's name typed on the cover line (and cat or dog) names the book,
@@ -13,37 +14,7 @@
   doc.classList.add('js');
   var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ---- feel: sound and touch ----
-  // Sounds load quietly after the page; the browser lets them play only after the first tap, and
-  // every sound answers something the person did. The speaker button in the bar mutes them.
-  var feel = { on: true, ctx: null, bufs: {}, touched: false };
-  try { feel.on = localStorage.getItem('pb-sound') !== 'off'; } catch (e) {}
-  function loadSounds() {
-    var AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC || !window.fetch || feel.ctx) return;
-    try { feel.ctx = new AC(); } catch (e) { return; }
-    ['tap', 'toggle', 'pat', 'success', 'open', 'close', 'tick'].forEach(function (n) {
-      fetch('/snd/' + n + '.mp3')
-        .then(function (r) { return r.ok ? r.arrayBuffer() : null; })
-        .then(function (b) { if (b) feel.ctx.decodeAudioData(b, function (buf) { feel.bufs[n] = buf; }, function () {}); })
-        .catch(function () {});
-    });
-  }
-  if ('requestIdleCallback' in window) requestIdleCallback(loadSounds, { timeout: 2500 }); else setTimeout(loadSounds, 1200);
-  function sound(n, vol, pitch) {
-    if (!feel.on || !feel.touched || !feel.ctx || !feel.bufs[n]) return;
-    try {
-      if (feel.ctx.state === 'suspended') feel.ctx.resume();
-      var src = feel.ctx.createBufferSource();
-      src.buffer = feel.bufs[n];
-      // A hair of random pitch, so a run of taps sounds alive instead of mechanical.
-      src.playbackRate.value = (pitch || 1) * (0.97 + Math.random() * 0.06);
-      var g = feel.ctx.createGain();
-      g.gain.value = vol == null ? 0.4 : vol;
-      src.connect(g); g.connect(feel.ctx.destination);
-      src.start();
-    } catch (e) {}
-  }
+  // ---- feel: touch ----
   // Vibration: Android browsers have navigator.vibrate. Safari has none, but on iOS 18 a tap on a
   // switch control ticks the Taptic Engine, so a hidden one is tapped for single beats.
   var canVibrate = 'vibrate' in navigator;
@@ -68,20 +39,7 @@
       }
     } catch (e) {}
   }
-  window.addEventListener('pointerdown', function () { feel.touched = true; if (feel.ctx && feel.ctx.state === 'suspended') feel.ctx.resume(); }, { capture: true, passive: true });
-  window.addEventListener('keydown', function () { feel.touched = true; }, { capture: true, passive: true });
-  var sndBtn = document.querySelector('[data-snd]');
-  if (sndBtn) {
-    sndBtn.hidden = false;
-    sndBtn.setAttribute('aria-pressed', String(feel.on));
-    sndBtn.addEventListener('click', function () {
-      feel.on = !feel.on;
-      sndBtn.setAttribute('aria-pressed', String(feel.on));
-      try { localStorage.setItem('pb-sound', feel.on ? 'on' : 'off'); } catch (e) {}
-      sound('toggle', 0.4);
-      buzz(8);
-    });
-  }
+
 
   // ---- live content from the dashboard ----
   var live = {};
@@ -158,11 +116,10 @@
     document.querySelectorAll('.kind, .seg').forEach(function (g) { g.style.setProperty('--ki', k === 'dog' ? '1' : '0'); });
     if (hero) {
       hero.setAttribute('data-pet', k);
-      hero.querySelectorAll('.hp-screen img').forEach(function (im) { im.classList.toggle('on', im.getAttribute('data-pet') === k); });
+      hero.querySelectorAll('.ip-screen img').forEach(function (im) { im.classList.toggle('on', im.getAttribute('data-pet') === k); });
       var hs = hero.querySelector('[data-hero-sprite]');
       if (hs) hopSprite(hs);
     }
-    sound('toggle', 0.4, k === 'dog' ? 0.92 : 1.06);
     buzz(10);
     nameBook();
   }
@@ -253,11 +210,9 @@
       hopSprite(sp);
       if (pats % 5 === 0) {
         // Every fifth pat: a little cheer, three hearts and a rolling buzz.
-        sound('success', 0.45);
         buzz([12, 50, 12, 50, 28]);
         if (!reduced) [-26, 0, 26].forEach(function (dx, i) { setTimeout(function () { heart(sp, dx); }, i * 90); });
       } else {
-        sound('pat', 0.5, 0.9 + (pats % 4) * 0.07);
         buzz([10, 40, 16]);
         if (!reduced) heart(sp, (Math.random() - 0.5) * 30);
       }
@@ -279,7 +234,6 @@
     b.classList.add('pressed');
     var off = function () { b.classList.remove('pressed'); window.removeEventListener('pointerup', off); window.removeEventListener('pointercancel', off); };
     window.addEventListener('pointerup', off); window.addEventListener('pointercancel', off);
-    sound('tap', 0.42);
     buzz(8);
     if (reduced) return;
     var rip = b.querySelector(':scope > .rip');
@@ -303,47 +257,68 @@
   // A soft click for the other controls: tabs of the drawer, the nav, the name field.
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('.bar nav a, .seg button');
-    if (a) { sound('tick', 0.35); buzz(6); }
+    if (a) { buzz(6); }
   });
 
-  // ---- the scroll story: the step in the middle of the screen picks the phone's screen ----
+  // ---- the scroll story: the step in the middle of the screen picks what the phone shows.
+  // The phone turns around (a quarter turn out, the screen changes edge-on, a quarter turn back with
+  // a little overshoot) and the new part of the app plays. Only the clip on screen loads and plays.
   var story = document.querySelector('.story');
   if (story) {
     var steps = story.querySelectorAll('[data-step]');
-    var shots = story.querySelectorAll('[data-shot]');
-    var dots = story.querySelectorAll('.dots i');
-    var phone = story.querySelector('.phone');
-    var current = 0;
+    var vids = story.querySelectorAll('video[data-shot]');
+    var turn = story.querySelector('.ip-turn');
+    var tiltBox = story.querySelector('.ip-tilt');
+    var current = 0, live = false, spin = 0;
+    var play = function () {
+      vids.forEach(function (v, i) {
+        if (i === current && live && !reduced) {
+          if (v.preload !== 'auto') v.preload = 'auto';
+          var pr = v.play(); if (pr && pr.catch) pr.catch(function () {});
+        } else if (!v.paused) v.pause();
+      });
+    };
+    var swap = function (n) {
+      vids.forEach(function (v, i) { v.classList.toggle('on', i === n); if (i === n) { try { v.currentTime = 0; } catch (e) {} } });
+      play();
+    };
     var show = function (n) {
       if (n === current) return;
+      var dir = n > current ? 1 : -1;
       current = n;
       steps.forEach(function (s, i) { s.classList.toggle('on', i === n); });
-      shots.forEach(function (s, i) { s.classList.toggle('on', i === n); });
-      dots.forEach(function (d, i) { d.classList.toggle('on', i === n); });
-      // A soft tick as each screen lands (only once the person has touched the page).
-      sound('tick', 0.22);
-      if (phone && !reduced) { phone.classList.remove('bump'); void phone.offsetWidth; phone.classList.add('bump'); }
+      if (!turn || !turn.animate || reduced) { swap(n); return; }
+      var mine = ++spin;
+      var out = turn.animate([{ transform: 'rotateY(0deg)' }, { transform: 'rotateY(' + 90 * dir + 'deg)' }], { duration: 230, easing: 'cubic-bezier(0.55, 0, 0.9, 0.45)', fill: 'forwards' });
+      out.onfinish = function () {
+        if (mine !== spin) return;
+        swap(current);
+        out.cancel();
+        turn.animate([{ transform: 'rotateY(' + -90 * dir + 'deg)' }, { transform: 'rotateY(0deg)' }], { duration: 560, easing: 'cubic-bezier(0.2, 1.3, 0.4, 1)' });
+      };
     };
     if ('IntersectionObserver' in window) {
       var seen = new IntersectionObserver(function (es) {
         es.forEach(function (e) { if (e.isIntersecting) show(Number(e.target.getAttribute('data-step'))); });
       }, { rootMargin: '-45% 0px -45% 0px' });
       steps.forEach(function (s) { seen.observe(s); });
+      // Clips play only while the story is on screen.
+      new IntersectionObserver(function (es) { live = es[0].isIntersecting; play(); }).observe(story);
     } else {
       steps.forEach(function (s) { s.classList.add('on'); });
     }
-    // The phone tips up into place as the story arrives (scroll-linked, transform only).
-    if (phone && !reduced) {
+    // The phone rises into place as the story arrives (scroll-linked, transform only).
+    if (tiltBox && !reduced) {
       var ticking = false;
-      var tilt = function () {
+      var rise = function () {
         ticking = false;
         var r = story.getBoundingClientRect();
         var h = window.innerHeight;
-        var p = Math.min(1, Math.max(0, (h - r.top) / (h * 0.75)));
-        phone.style.setProperty('--p', p.toFixed(3));
+        var p = Math.min(1, Math.max(0, (h - r.top) / (h * 0.9)));
+        tiltBox.style.setProperty('--p', p.toFixed(3));
       };
-      window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(tilt); } }, { passive: true });
-      tilt();
+      window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(rise); } }, { passive: true });
+      rise();
     }
   }
 
@@ -384,7 +359,6 @@
       if (d.open) cards.forEach(function (o) { if (o !== d) o.open = false; });
     });
     d.querySelector('summary').addEventListener('click', function () {
-      sound(d.open ? 'close' : 'open', 0.38);
       buzz(d.open ? 6 : 10);
     });
   });
